@@ -1,0 +1,4 @@
+ipykernel # used for interactive notebooks, used in setting up this repo
+mpi4py
+pyclesperanto-prototype
+scikit-image
