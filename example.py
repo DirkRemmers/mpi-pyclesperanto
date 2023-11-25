@@ -9,9 +9,10 @@ import pyclesperanto_prototype as cle
 from skimage.io import imread
 import numpy as np
 from datetime import datetime
+from time import sleep
 
 # define some analysis stuff on the gpu
-def some_analysis_stuff(image:np.ndarray)->np.ndarray:
+def some_analysis_stuff(image:np.ndarray, extra_wait_time:int)->np.ndarray:
 
     # get the individual channels
     nuclei = image[:,:,2]
@@ -30,13 +31,17 @@ def some_analysis_stuff(image:np.ndarray)->np.ndarray:
 
     del cells_gpu, cells_labels_gpu
 
+    # add some extra waiting time to showcase time differences
+    # in reality this will be taken up by more advanced image-analysis functionality
+    sleep(extra_wait_time)
+
     return nuclei_labels, cells_labels
 
 # for time tracking purposes
 start = datetime.now()
 
 # select a GPU for pyclesperanto
-cle.select_device("RTX") # change to the correct GPU type
+cle.select_device("MX250") # change to the correct GPU type
 
 # load in an image
 image = imread("example-image.tiff")
@@ -54,7 +59,7 @@ tiles = [tile_1, tile_2, tile_3, tile_4]
 
 # process the images in parallel
 for tile in tiles:
-    nuclei_labels, cells_labels = some_analysis_stuff(image = tile)
+    nuclei_labels, cells_labels = some_analysis_stuff(image = tile, extra_wait_time=2)
     
 # for time tracking purposes
 end = datetime.now()
